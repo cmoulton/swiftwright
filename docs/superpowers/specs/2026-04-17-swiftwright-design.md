@@ -653,6 +653,43 @@ Swiftwright v1 is successful when:
 8. Running `/swift-validate-skills` surfaces stale skills and walks the user through re-verification.
 9. Updates to Swiftwright propagate to all projects via `/reload-plugins`, and existing projects remain stable (templates unchanged unless user opts into refresh).
 
+## Phase 2: Agentic feature development (future work)
+
+Explicitly out of scope for v1. V1 answers "how do I set up and modernize an iOS project to work well with an agent?" Phase 2 answers "once a Swiftwright project is in place, how does day-to-day feature development become maximally agentic?"
+
+Work on Phase 2 begins after Swiftwright v1 has been used on at least one real project (the typing app) for enough feature cycles to produce honest requirements.
+
+### Anticipated scope
+
+**Feature-lifecycle commands** — operationalize the full path from intent to shipped code:
+- `/swift-new-feature` — takes a feature description, scaffolds View / ViewModel / Service / Domain files matching the layer model, stubs Knit registrations, stubs snapshot + unit tests, and then enters an implementation loop guided by the relevant skills.
+- `/swift-bug-fix` — reproduce → red test → fix → green test → regression-check cycle, driven through XcodeBuildMCP.
+- `/swift-refactor` — bounded refactor with build and test gates at every step.
+- `/swift-release` — version bump, changelog from diff, screenshot regeneration, metadata checks, submission prep.
+
+**Test-driven loops as first-class skills** — formalize the TDD cycle (red → green → refactor → verify) so the agent follows it consistently, not just when reminded.
+
+**Visual / simulator feedback loops** — the agent runs the simulator, takes screenshots, compares against reference designs or snapshot baselines, iterates until match. Requires XcodeBuildMCP extensions (or a successor) that expose simulator UI interaction beyond build/test.
+
+**Specialized subagents with defined roles** — leverage Claude Code's subagent system:
+- Architect (design proposals, spec review)
+- Implementer (feature code)
+- Reviewer (pre-commit code review against Swiftwright skills)
+- Test-writer (fills in test coverage gaps)
+- Debugger (reproduces and fixes reported issues)
+
+**Autonomous loops for bounded repetitive work** — "migrate all N features to the new navigation pattern," "update N package dependencies," "regenerate all snapshots after a style change." Each loop has a clear terminating condition and checkpoints for human review.
+
+**Observability during development** — simulator logs, crash reports, and performance traces piped back to the agent so debugging isn't blind. Requires MCP or hook extensions.
+
+**Pre-commit self-review** — agent reviews its own diff against the active Swiftwright skills before proposing a commit. Catches "did I violate the ambient-state rule?" / "is my view properly Equatable?" without requiring the human to notice.
+
+**App Store workflow** — screenshot automation, release notes from commits, metadata sanity-checks, localization completeness audits, submission dry-runs.
+
+### Explicit deferral
+
+Phase 2 designs do not exist yet. Attempting to design them before v1 lands produces speculative requirements. The reflection skill captures early signals that belong in Phase 2 so they're not lost; formal Phase 2 brainstorming happens after v1.
+
 ## Next step
 
-Invoke the `superpowers:writing-plans` skill to create the implementation plan based on this spec.
+Invoke the `superpowers:writing-plans` skill to create the implementation plan for v1 based on this spec.
